@@ -3,6 +3,7 @@ import axios from "axios";
 import { movieID } from "../../constants/store";
 import Details from "../details/details";
 import loader from "../../assets/loader.svg";
+let env = import.meta.env.VITE_AUTH 
 
 function Trend() {
   const [movies, setMovies] = useState([]);
@@ -18,14 +19,14 @@ function Trend() {
       url: "https://api.themoviedb.org/3/movie/popular",
       headers: {
         accept: "application/json",
-        Authorization: import.meta.env.VITE_AUTH,
+        Authorization: env,
       },
     };
 
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data.results);
+        console.log(response);
         setMovies(response.data.results);
         setLoading(false);
       })
