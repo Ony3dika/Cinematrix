@@ -34,31 +34,31 @@ function Hero() {
       </div>
       {/* Images */}
       <div className='mt-6 grid grid-cols-3 gap-2 md:grid-cols-5 md:gap-3 lg:grid-cols-7 lg:gap-7'>
-        <div className='block h-40 w-28 overflow-hidden rounded-md bg-red-300 shadow-lg shadow-txt dark:shadow-white/20 md:hidden lg:block lg:h-48 lg:w-36'>
+        <div className='block h-40 w-28 overflow-hidden rounded-md bg-red-300 shadow-lg shadow-txt dark:shadow-white/20 md:hidden lg:block lg:h-60 lg:w-36'>
           <img src={img1} className='h-full w-full object-cover' alt='img1' />
         </div>
 
-        <div className='mt-10 h-40 w-28 overflow-hidden rounded-md bg-blue-300 shadow-lg shadow-txt dark:shadow-white/20 lg:mt-10 lg:h-48 lg:w-36'>
+        <div className='mt-10 h-40 w-28 overflow-hidden rounded-md bg-blue-300 shadow-lg shadow-txt dark:shadow-white/20 lg:mt-10 lg:h-60 lg:w-36'>
           <img src={img2} className='h-full w-full object-cover' alt='img2' />
         </div>
 
-        <div className='h-40 w-28 overflow-hidden rounded-md bg-green-300 shadow-lg shadow-txt dark:shadow-white/20 md:mt-16 lg:mt-16 lg:h-48 lg:w-36'>
+        <div className='h-40 w-28 overflow-hidden rounded-md bg-green-300 shadow-lg shadow-txt dark:shadow-white/20 md:mt-16 lg:mt-16 lg:h-60 lg:w-36'>
           <img src={img3} className='h-full w-full object-cover' alt='img3' />
         </div>
 
-        <div className='mt-24 hidden h-44 w-28 overflow-hidden rounded-md bg-yellow-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-48 lg:w-36'>
+        <div className='mt-24 hidden h-44 w-28 overflow-hidden rounded-md bg-yellow-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-60 lg:w-36'>
           <img src={img4} className='h-full w-full object-cover' alt='img4' />
         </div>
 
-        <div className='mt-16 hidden h-44 w-28 overflow-hidden rounded-md bg-teal-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-48 lg:w-36'>
+        <div className='mt-16 hidden h-44 w-28 overflow-hidden rounded-md bg-teal-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-60 lg:w-36'>
           <img src={img5} className='h-full w-full object-cover' alt='img5' />
         </div>
 
-        <div className='mt-10 hidden h-44 w-28 overflow-hidden rounded-md bg-indigo-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-48 lg:w-36'>
+        <div className='mt-10 hidden h-44 w-28 overflow-hidden rounded-md bg-indigo-300 shadow-lg shadow-txt dark:shadow-white/20 md:block lg:h-60 lg:w-36'>
           <img src={img6} className='h-full w-full object-cover' alt='img6' />
         </div>
 
-        <div className='hidden h-44 w-28 overflow-hidden rounded-md bg-gray-300 shadow-lg shadow-txt dark:shadow-white/20 lg:block lg:h-48 lg:w-36'>
+        <div className='hidden h-44 w-28 overflow-hidden rounded-md bg-gray-300 shadow-lg shadow-txt dark:shadow-white/20 lg:block lg:h-60 lg:w-36'>
           <img src={img7} className='h-full w-full object-cover' alt='img7' />
         </div>
       </div>

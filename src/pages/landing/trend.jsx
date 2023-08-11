@@ -91,7 +91,7 @@ function Trend() {
             >
               <div className='flex justify-center'>
                 <img
-                  className='h-60 rounded-md transition-all duration-500 hover:scale-110 lg:h-auto '
+                  className='h-60 rounded-md transition-all duration-500 hover:scale-110 lg:h-64'
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt=''
                 />
