@@ -1,5 +1,4 @@
-import Navbar from "../../Components/navbar";
-
+import Navbar from "../../components/navbar";
 
 function Movie() {
   return (
