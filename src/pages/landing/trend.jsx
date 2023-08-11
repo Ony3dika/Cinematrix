@@ -44,7 +44,7 @@ function Trend() {
 
   return (
     <div className='py-5'>
-      <p className='mt-5 w-fit rounded-sm border-b-[3px] border-sub py-1 pl-2 pr-5 text-xl font-black text-sub lg:text-2xl'>
+      <p className='mt-5 w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 text-xl font-black text-purple lg:text-2xl'>
         Trending
       </p>
       {popUP ? <Details id={id} close={close} /> : ""}
@@ -52,7 +52,7 @@ function Trend() {
       {/* LOADING */}
       <section className='relative isolate flex justify-center'>
         {loading ? (
-          <div className='h-1/10 flex w-full justify-center'>
+          <div className='h-1/10 flex w-full mt-10 justify-center'>
             <div className='z-10 flex h-fit w-1/2 justify-center rounded-md border-[1px] border-purple bg-gray-400 backdrop-blur-md dark:bg-txt/40 lg:w-1/3'>
               {validate ? (
                 <div className='my-5 flex flex-col items-center justify-around'>
