@@ -19,7 +19,7 @@ function Navbar() {
   }, [theme]);
 
   return (
-    <nav className="sticky z-50 top-0 bg-primary dark:bg-primaryDark">
+    <nav className="sticky z-20 top-0 bg-primary px-2 dark:bg-primaryDark">
       <div className='flex py-5'>
         <section className='flex basis-full justify-between lg:basis-2/3'>
           <p className='head bg-gradient-to-r from-sub to-purple bg-clip-text text-3xl font-bold text-transparent '>
