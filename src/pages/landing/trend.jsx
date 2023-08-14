@@ -26,7 +26,6 @@ function Trend() {
     axios
       .request(options)
       .then(function (response) {
-        console.log(response);
         setMovies(response.data.results);
         setLoading(false);
       })
