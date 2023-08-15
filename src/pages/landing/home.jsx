@@ -1,6 +1,7 @@
 import Hero from "./hero";
-import Trend from "./trend";
+import Popular from "./popular";
 import Navbar from "../../components/navbar";
+import Footer from "../../components/footer";
 
 function Home() {
   return (
@@ -8,7 +9,8 @@ function Home() {
       <div className='container mx-auto min-h-screen px-5 lg:px-24'>
         <Navbar />
         <Hero/>
-        <Trend/>
+        <Popular/>
+        <Footer/>
       </div>
     </main>
   );

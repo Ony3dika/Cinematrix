@@ -65,7 +65,7 @@ function Navbar() {
 
       {/* mobile menu */}
       <section
-        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl  border-r-2 border-r-purple bg-primary/90 px-4 pl-6 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:pl-14 md:pt-5 lg:hidden ${
+        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl border-r-2 border-r-purple bg-primary/90 px-4 pl-6 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:pl-14 md:pt-5 lg:hidden ${
           menu ? "left-0" : "left-[-100%]"
         } `}
       >

@@ -24,7 +24,7 @@ function Details({ close, id }) {
       },
     };
 
-    movieImages()
+    movieImages();
     axios
       .request(movieData)
       .then(function (response) {
@@ -53,7 +53,7 @@ function Details({ close, id }) {
       .request(options)
       .then(function (response) {
         console.log(response.data);
-        setMovieImage(response.data.backdrops)
+        setMovieImage(response.data.backdrops);
       })
       .catch(function (error) {
         console.error(error);
@@ -63,7 +63,7 @@ function Details({ close, id }) {
     executed ? "" : movieDetails();
   }
   return (
-    <div className='fixed left-0 right-0 top-0 z-30 mx-auto overflow-y-scroll min-h-screen rounded-md border-purple/40 bg-primary dark:bg-primaryDark lg:top-5 lg:w-[90%] lg:border-[1px]'>
+    <div className='fixed left-0 right-0 top-0 z-30 mx-auto min-h-screen overflow-y-scroll rounded-md border-purple/40 bg-primary dark:bg-primaryDark lg:top-5 lg:w-[90%] lg:border-[1px]'>
       <div className='absolute left-0 z-20 flex w-full justify-end p-4'>
         <button onClick={() => close()}>
           <IoIosCloseCircle
@@ -94,7 +94,7 @@ function Details({ close, id }) {
                   </button>
                 </div>
               ) : (
-                <img className='h-28' src={loader} />
+                <img className='h-28' src={loader} alt='loading...' />
               )}
             </div>
           </div>
@@ -104,19 +104,19 @@ function Details({ close, id }) {
       </section>
 
       {/* Movie Details */}
-      <main>
+      <main className='min-h-screen overflow-y-scroll'>
         <section className='relative isolate'>
           <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
-            alt=''
+            alt='movie-backdrop'
             className='h-1/4 w-full md:h-1/3 lg:h-2/4'
           />
-          <div className='absolute left-0 top-0 h-full w-full bg-gradient-to-b from-primary/80 from-0%  to-primary dark:from-primaryDark/80 dark:to-primaryDark'>
+          <div className='absolute left-0 top-0 h-full w-full bg-gradient-to-b from-primary/80 from-0% to-primary dark:from-primaryDark/80 dark:to-primaryDark'>
             <div className='mt-24 px-3 lg:mt-40 lg:px-16 '>
               <div className='flex items-center'>
                 <img
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
-                  alt=''
+                  alt='movie-poster'
                   className='h-40 rounded-md md:h-60 lg:h-64'
                 />
 
@@ -138,12 +138,12 @@ function Details({ close, id }) {
                   <div className='no-scrollbar mt-1 flex overflow-x-scroll'>
                     {movie.genres &&
                       movie.genres.map((genre) => (
-                        <div
-                          className='min-h-5 mr-1 max-h-8 text-clip rounded border-2 border-white/80 bg-white/30 px-3 py-1 text-sm text-white/80 lg:text-base'
+                        <p
+                          className='min-h-5 mr-1 max-h-8 text-clip rounded-2xl border-2 border-txt/80 bg-txt/10 px-3 py-1 text-sm text-txt dark:border-white/80 dark:bg-white/10 dark:text-white/80 lg:text-base'
                           key={genre.id}
                         >
                           {genre.name}
-                        </div>
+                        </p>
                       ))}
                   </div>
 
@@ -152,7 +152,7 @@ function Details({ close, id }) {
                   </p>
 
                   <a href={movie.homepage} target='_blank' rel='noreferrer'>
-                    <button className='mt-2 flex items-center rounded-md border-2 border-purple bg-purple/40 px-5 py-1 text-txt dark:text-white/80'>
+                    <button className='mt-2 flex items-center rounded-full border-2 border-purple bg-purple/20 px-5 py-1 text-xs text-txt dark:text-white/80 md:text-base'>
                       Visit <BsBoxArrowUpRight className='ml-1' size={"1rem"} />
                     </button>
                   </a>
@@ -163,19 +163,32 @@ function Details({ close, id }) {
                 {movie.overview}
               </p>
 
-              <div className="flex mt-5 overflow-x-scroll no-scrollbar">
-                {movieImage &&
-                  movieImage.map((image, index) => (
-                    <img
-                      src={`https://image.tmdb.org/t/p/original${image.file_path}`}
-                      key={index}
-                      className="rounded-md mx-3 h-32 md:h-40 lg:h-52"
-                      alt=''
-                    />
-                  ))}
-              </div>
+              <section className='mt-5'>
+                <p className='text-md w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 font-black text-purple lg:text-lg'>
+                  Images
+                </p>
+                <div className='no-scrollbar mt-4 flex overflow-x-scroll'>
+                  {movieImage &&
+                    movieImage.map((image, index) => (
+                      <img
+                        src={`https://image.tmdb.org/t/p/original${image.file_path}`}
+                        key={index}
+                        className='mx-3 h-32 rounded-md md:h-40 lg:h-52'
+                        alt='movie-image'
+                      />
+                    ))}
+                </div>
+              </section>
 
-              <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Obcaecati, possimus? Asperiores aut consequuntur soluta, veniam magni fuga sint natus deleniti dolorum voluptatum aperiam nemo debitis molestiae sapiente exercitationem. A in doloremque sapiente architecto odio error illo quaerat. Nihil sequi aspernatur cumque vitae animi vel, expedita veniam beatae. Alias, corporis distinctio!</p>
+              <p className='mt-3 leading-relaxed text-txt dark:text-white/80'>
+                Dummy txt Lorem ipsum dolor sit amet, consectetur adipisicing
+                elit. Numquam eveniet molestiae et, est quaerat a possimus illo
+                natus iste odio? Voluptatem eveniet, pariatur explicabo iusto,
+                harum consequuntur quod architecto beatae aliquam, ducimus
+                dolore neque? Odit itaque perspiciatis ratione quasi mollitia,
+                porro sed ad asperiores nulla explicabo, in necessitatibus
+                minima incidunt.
+              </p>
             </div>
           </div>
         </section>
