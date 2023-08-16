@@ -65,7 +65,7 @@ function Navbar() {
 
       {/* mobile menu */}
       <section
-        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl border-r-2 border-r-purple bg-primary/90 px-4 pl-6 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:pl-14 md:pt-5 lg:hidden ${
+        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl border-r-2 border-r-purple bg-primary/90 px-4 pl-8 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:pl-20 md:pt-10 md:px-10 pt-3  lg:hidden ${
           menu ? "left-0" : "left-[-100%]"
         } `}
       >
@@ -85,7 +85,7 @@ function Navbar() {
         </div>
         {Path.map((item, index) => (
           <Link key={index}>
-            <button className='my-3 flex items-center rounded-full py-1.5 text-sub'>
+            <button className='my-3 md:my-10 flex items-center rounded-full py-1.5 text-sub'>
               {item.icon} <span className='ml-1'>{item.title}</span>
             </button>
           </Link>

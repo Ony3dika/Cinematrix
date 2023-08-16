@@ -2,35 +2,52 @@ import axios from "axios";
 import { useState } from "react";
 import { IoIosCloseCircle } from "react-icons/io";
 import { BsBoxArrowUpRight, BsFillStarFill } from "react-icons/bs";
-let env = import.meta.env.VITE_AUTH;
+let API_KEY = import.meta.env.VITE_AUTH;
 import loader from "../../assets/loader.svg";
 
 function Details({ close, id }) {
   const [executed, setExecuted] = useState(false);
   const [movie, setMovie] = useState({});
   const [movieImage, setMovieImage] = useState([]);
+  const [recommendations, setRecommendations] = useState([]);
   const [retry, setRetry] = useState(false);
   const [loading, setLoading] = useState(true);
   const [validate, setValidate] = useState(false);
 
   const movieDetails = () => {
-    const movieData = {
+    const movieDetails = {
       method: "GET",
       url: `https://api.themoviedb.org/3/movie/${id}`,
       params: { language: "en-US" },
       headers: {
         accept: "application/json",
-        Authorization: env,
+        Authorization: API_KEY,
       },
     };
 
+    const recommend = {
+      method: "GET",
+      url: `https://api.themoviedb.org/3/movie/${id}/recommendations`,
+      params: { language: "en-US", page: "1" },
+      headers: {
+        accept: "application/json",
+        Authorization: API_KEY,
+      },
+    };
     movieImages();
+
+    const getDetails = axios.request(movieDetails);
+    const getRecommendations = axios.request(recommend);
+
     axios
-      .request(movieData)
-      .then(function (response) {
-        setMovie(response.data);
-        setLoading(false);
-      })
+      .all([getDetails, getRecommendations])
+      .then(
+        axios.spread((...allData) => {
+          setMovie(allData[0].data);
+          setRecommendations(allData[1].data.results);
+          setLoading(false);
+        })
+      )
       .catch(function (error) {
         console.error(error.response);
         setValidate(true);
@@ -45,14 +62,13 @@ function Details({ close, id }) {
       url: `https://api.themoviedb.org/3/movie/${id}/images`,
       headers: {
         accept: "application/json",
-        Authorization: env,
+        Authorization: API_KEY,
       },
     };
 
     axios
       .request(options)
       .then(function (response) {
-        console.log(response.data);
         setMovieImage(response.data.backdrops);
       })
       .catch(function (error) {
@@ -68,7 +84,7 @@ function Details({ close, id }) {
         <button onClick={() => close()}>
           <IoIosCloseCircle
             size={"2rem"}
-            className='text-primaryDark dark:text-white/80'
+            className='text-primaryDark/80  hover:text-primaryDark dark:text-white/50 hover:dark:text-white/80'
           />
         </button>
       </div>
@@ -104,7 +120,11 @@ function Details({ close, id }) {
       </section>
 
       {/* Movie Details */}
-      <main className='min-h-screen overflow-y-scroll'>
+      <main
+        className={`min-h-screen overflow-y-scroll  ${
+          loading ? "hidden" : "block"
+        }`}
+      >
         <section className='relative isolate'>
           <img
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
@@ -123,7 +143,10 @@ function Details({ close, id }) {
                 {/* Details */}
                 <section className='ml-2 overflow-x-auto md:ml-5'>
                   <p className='text-xl font-black text-purple lg:text-2xl'>
-                    {movie.original_title}
+                    {movie.original_title}{" "}
+                    <span className='text-purple/70'>
+                      ({movie.release_date && movie.release_date.slice(0, 4)})
+                    </span>
                   </p>
 
                   <p className='flex items-center text-sm text-txt dark:text-white/70'>
@@ -180,15 +203,46 @@ function Details({ close, id }) {
                 </div>
               </section>
 
-              <p className='mt-3 leading-relaxed text-txt dark:text-white/80'>
-                Dummy txt Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit. Numquam eveniet molestiae et, est quaerat a possimus illo
-                natus iste odio? Voluptatem eveniet, pariatur explicabo iusto,
-                harum consequuntur quod architecto beatae aliquam, ducimus
-                dolore neque? Odit itaque perspiciatis ratione quasi mollitia,
-                porro sed ad asperiores nulla explicabo, in necessitatibus
-                minima incidunt.
-              </p>
+              <section className='mt-5'>
+                <p className='text-md w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 font-black text-purple lg:text-lg'>
+                  Recommendations
+                </p>
+
+                <div className='no-scrollbar mt-5 flex overflow-y-hidden overflow-x-scroll'>
+                  {recommendations &&
+                    recommendations.map((movie) => (
+                      <div
+                        key={movie.id}
+                        className='mb-10 mr-4 min-h-fit w-40 flex-none overflow-clip rounded-md border-2 border-transparent bg-gray-100/80 transition-all duration-300 ease-linear hover:border-2 hover:border-purple dark:bg-txt/30'
+                      >
+                        <figure className='flex justify-center'>
+                          <img
+                            className='mt-5 h-40 rounded-md text-txt transition-all duration-500 hover:scale-110 dark:text-white/80 '
+                            src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                            alt='movie_poster'
+                          />
+                        </figure>
+
+                        {/* NAME */}
+                        <article className='relative isolate z-0'>
+                          <div className='absolute -top-6 ml-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-purple  bg-gray-100/80 dark:bg-txt/90 '>
+                            <p className='text-xs text-txt dark:text-white/70'>
+                              {Math.round(movie.vote_average * 10)}
+                              <sup className='text-[0.4rem]'>%</sup>
+                            </p>
+                          </div>
+                          <p className='ml-2 pt-2 font-medium text-txt dark:text-white/70'>
+                            {movie.original_title}
+                          </p>
+
+                          <p className='ml-2 mt-3 font-medium text-txt/60 dark:text-white/40'>
+                            {movie.release_date.slice(0, 4)}
+                          </p>
+                        </article>
+                      </div>
+                    ))}
+                </div>
+              </section>
             </div>
           </div>
         </section>
