@@ -1,6 +1,6 @@
 import Hero from "./hero";
-import Popular from "./popular";
 import Navbar from "../../components/navbar";
+import Popular from "../landing/popular"
 import Footer from "../../components/footer";
 
 function Home() {

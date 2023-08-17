@@ -5,19 +5,21 @@ import { BsBoxArrowUpRight, BsFillStarFill } from "react-icons/bs";
 let API_KEY = import.meta.env.VITE_AUTH;
 import loader from "../../assets/loader.svg";
 
-function Details({ close, id }) {
+function Details(props) {
   const [executed, setExecuted] = useState(false);
   const [movie, setMovie] = useState({});
+  const [movieId, setmovieId] = useState("")
   const [movieImage, setMovieImage] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
   const [retry, setRetry] = useState(false);
   const [loading, setLoading] = useState(true);
   const [validate, setValidate] = useState(false);
+  
 
-  const movieDetails = () => {
+  const movieDetails = (para) => {
     const movieDetails = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${id}`,
+      url: `https://api.themoviedb.org/3/movie/${para === undefined ? props.id  : para}`,
       params: { language: "en-US" },
       headers: {
         accept: "application/json",
@@ -27,14 +29,14 @@ function Details({ close, id }) {
 
     const recommend = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${id}/recommendations`,
+      url: `https://api.themoviedb.org/3/movie/${props.id}/similar`,
       params: { language: "en-US", page: "1" },
       headers: {
         accept: "application/json",
         Authorization: API_KEY,
       },
     };
-    movieImages();
+    movieImages(para);
 
     const getDetails = axios.request(movieDetails);
     const getRecommendations = axios.request(recommend);
@@ -56,10 +58,10 @@ function Details({ close, id }) {
     setExecuted(true);
   };
 
-  const movieImages = () => {
+  const movieImages = (para) => {
     const options = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${id}/images`,
+      url: `https://api.themoviedb.org/3/movie/${para === undefined ? props.id  : para}/images`,
       headers: {
         accept: "application/json",
         Authorization: API_KEY,
@@ -81,7 +83,7 @@ function Details({ close, id }) {
   return (
     <div className='fixed left-0 right-0 top-0 z-30 mx-auto min-h-screen overflow-y-scroll rounded-md border-purple/40 bg-primary dark:bg-primaryDark lg:top-5 lg:w-[90%] lg:border-[1px]'>
       <div className='absolute left-0 z-20 flex w-full justify-end p-4'>
-        <button onClick={() => close()}>
+        <button onClick={() => props.close()}>
           <IoIosCloseCircle
             size={"2rem"}
             className='text-primaryDark/80  hover:text-primaryDark dark:text-white/50 hover:dark:text-white/80'
@@ -127,6 +129,7 @@ function Details({ close, id }) {
       >
         <section className='relative isolate'>
           <img
+            loading='lazy'
             src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
             alt='movie-backdrop'
             className='h-1/4 w-full md:h-1/3 lg:h-2/4'
@@ -135,6 +138,7 @@ function Details({ close, id }) {
             <div className='mt-24 px-3 lg:mt-40 lg:px-16 '>
               <div className='flex items-center'>
                 <img
+                  loading='lazy'
                   src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
                   alt='movie-poster'
                   className='h-40 rounded-md md:h-60 lg:h-64'
@@ -194,6 +198,7 @@ function Details({ close, id }) {
                   {movieImage &&
                     movieImage.map((image, index) => (
                       <img
+                        loading='lazy'
                         src={`https://image.tmdb.org/t/p/original${image.file_path}`}
                         key={index}
                         className='mx-3 h-32 rounded-md md:h-40 lg:h-52'
@@ -213,6 +218,9 @@ function Details({ close, id }) {
                     recommendations.map((movie) => (
                       <div
                         key={movie.id}
+                        onClick={() => {
+                          movieDetails(movie.id);
+                        }}
                         className='mb-10 mr-4 min-h-fit w-40 flex-none overflow-clip rounded-md border-2 border-transparent bg-gray-100/80 transition-all duration-300 ease-linear hover:border-2 hover:border-purple dark:bg-txt/30'
                       >
                         <figure className='flex justify-center'>

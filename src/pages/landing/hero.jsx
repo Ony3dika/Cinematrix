@@ -1,4 +1,5 @@
 import { FaGooglePlay } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import img1 from "../../assets/img1.webp";
 import img2 from "../../assets/img2.webp";
 import img3 from "../../assets/img3.webp";
@@ -27,10 +28,12 @@ function Hero() {
           Get Started
         </button>
 
-        <button className='flex items-center rounded-full border-[2px] border-purple px-2 py-3 font-semibold text-txt dark:text-white/80 lg:px-10'>
-          Watch Now
-          <FaGooglePlay className='ml-2' />
-        </button>
+        <Link to={"/movie"}>
+          <button className='flex items-center rounded-full border-[2px] border-purple px-2 py-3 font-semibold text-txt dark:text-white/80 lg:px-10'>
+            Watch Now
+            <FaGooglePlay className='ml-2' />
+          </button>
+        </Link>
       </div>
       {/* Images */}
       <div className='mt-6 grid grid-cols-3 gap-2 md:grid-cols-5 md:gap-3 lg:grid-cols-7 lg:gap-7'>

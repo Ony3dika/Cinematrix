@@ -19,7 +19,7 @@ function Navbar() {
   }, [theme]);
 
   return (
-    <nav className="sticky z-20 top-0 bg-primary px-2 dark:bg-primaryDark">
+    <nav className='sticky top-0 z-20 bg-primary px-2 dark:bg-primaryDark'>
       <div className='flex py-5'>
         <section className='flex basis-full justify-between lg:basis-2/3'>
           <p className='head bg-gradient-to-r from-sub to-purple bg-clip-text text-3xl font-bold text-transparent '>
@@ -65,7 +65,7 @@ function Navbar() {
 
       {/* mobile menu */}
       <section
-        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl border-r-2 border-r-purple bg-primary/90 px-4 pl-8 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:pl-20 md:pt-10 md:px-10 pt-3  lg:hidden ${
+        className={`fixed left-0 top-0 z-10 h-screen w-9/12 flex-col justify-around rounded-r-xl border-r-2 border-r-purple bg-primary/90 px-4 pl-8 pt-3 font-thin backdrop-blur-xl transition-all duration-300 dark:bg-primaryDark/90 md:px-10 md:pl-20 md:pt-10  lg:hidden ${
           menu ? "left-0" : "left-[-100%]"
         } `}
       >
@@ -84,8 +84,8 @@ function Navbar() {
           </div>
         </div>
         {Path.map((item, index) => (
-          <Link key={index}>
-            <button className='my-3 md:my-10 flex items-center rounded-full py-1.5 text-sub'>
+          <Link to={item.link} key={index}>
+            <button className='my-5 flex items-center rounded-full py-1.5 text-sub md:my-10'>
               {item.icon} <span className='ml-1'>{item.title}</span>
             </button>
           </Link>
@@ -103,7 +103,7 @@ function Navbar() {
             <MdDarkMode size={"1.3rem"} className='text-txt' />
           )}
 
-          <span className='font-medium text-sub ml-1'>Theme</span>
+          <span className='ml-1 font-medium text-sub'>Theme</span>
         </button>
       </section>
     </nav>
