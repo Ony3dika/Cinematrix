@@ -147,7 +147,7 @@ function Details(props) {
                 {/* Details */}
                 <section className='ml-2 overflow-x-auto md:ml-5'>
                   <p className='text-xl font-black text-purple lg:text-2xl'>
-                    {movie.original_title}{" "}
+                    {movie.title}{" "}
                     <span className='text-purple/70'>
                       ({movie.release_date && movie.release_date.slice(0, 4)})
                     </span>
@@ -220,6 +220,7 @@ function Details(props) {
                         key={movie.id}
                         onClick={() => {
                           movieDetails(movie.id);
+                          setLoading(true)
                         }}
                         className='mb-10 mr-4 min-h-fit w-40 flex-none overflow-clip rounded-md border-2 border-transparent bg-gray-100/80 transition-all duration-300 ease-linear hover:border-2 hover:border-purple dark:bg-txt/30'
                       >
@@ -240,7 +241,7 @@ function Details(props) {
                             </p>
                           </div>
                           <p className='ml-2 pt-2 font-medium text-txt dark:text-white/70'>
-                            {movie.original_title}
+                            {movie.title}
                           </p>
 
                           <p className='ml-2 mt-3 font-medium text-txt/60 dark:text-white/40'>
