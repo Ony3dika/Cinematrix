@@ -22,9 +22,9 @@ function Navbar() {
     <nav className='sticky top-0 z-20 bg-primary px-2 dark:bg-primaryDark'>
       <div className='flex py-5'>
         <section className='flex basis-full justify-between lg:basis-2/3'>
-          <p className='head bg-gradient-to-r from-sub to-purple bg-clip-text text-3xl font-bold text-transparent '>
+          <Link to={"/"} className='head bg-gradient-to-r from-sub to-purple bg-clip-text text-3xl font-bold text-transparent '>
             Cinematrix
-          </p>
+          </Link>
 
           <div>
             <FiMenu

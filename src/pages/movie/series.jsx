@@ -24,7 +24,14 @@ function Series() {
     const pop = {
       method: "GET",
       url: "https://api.themoviedb.org/3/tv/popular",
-      params: { language: "en-US", page: pageNo },
+      params: {
+        language: "en-US",
+        page: pageNo,
+        first_air_date_year: "2022",
+        include_adult: "false",
+        with_origin_country: "US",
+        include_null_first_air_dates: "false",
+      },
       headers: {
         accept: "application/json",
         Authorization: API_KEY,

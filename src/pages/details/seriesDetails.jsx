@@ -9,6 +9,7 @@ function SeriesDetails(props) {
   const [executed, setExecuted] = useState(false);
   const [serie, setSerie] = useState({});
   const [serieImage, setSerieImage] = useState([]);
+  const [serieVids, setSerieVids] = useState([])
   const [recommendations, setRecommendations] = useState([]);
   const [retry, setRetry] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -37,6 +38,7 @@ function SeriesDetails(props) {
       },
     };
     serieImages(para);
+    serieVid(para)
 
     const getDetails = axios.request(serieDetails);
     const getRecommendations = axios.request(recommend);
@@ -79,6 +81,29 @@ function SeriesDetails(props) {
         console.error(error);
       });
   };
+
+  const serieVid = (para) => {
+    const options = {
+      method: "GET",
+      url: `https://api.themoviedb.org/3/tv/${
+        para === undefined ? props.id : para
+      }/videos`,
+      headers: {
+        accept: "application/json",
+        Authorization: API_KEY,
+      },
+    };
+
+    axios
+      .request(options)
+      .then(function (response) {
+        setSerieVids(response.data.results);
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
+  };
+
   {
     executed ? "" : serieDetails();
   }
@@ -213,6 +238,25 @@ function SeriesDetails(props) {
                 </div>
               </section>
 
+              <section className='mt-5'>
+                <p className='text-md w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 font-black text-purple lg:text-lg'>
+                  Videos
+                </p>
+                <div className='no-scrollbar mt-4 flex overflow-x-scroll'>
+                  {serieVids &&
+                    serieVids.map((video) => (
+                      <div key={video.key} className='video'>
+                        <iframe
+                          className='mx-3 h-40 rounded-md lg:h-52'
+                          src={`https://www.youtube.com/embed/${video.key}`}
+                          title={video.name}
+                          frameBorder='0'
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    ))}
+                </div>
+              </section>
               <section className='mt-5'>
                 <p className='text-md w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 font-black text-purple lg:text-lg'>
                   Recommendations
