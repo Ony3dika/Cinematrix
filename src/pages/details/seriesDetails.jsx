@@ -5,20 +5,19 @@ import { BsBoxArrowUpRight, BsFillStarFill } from "react-icons/bs";
 let API_KEY = import.meta.env.VITE_AUTH;
 import loader from "../../assets/loader.svg";
 
-function Details(props) {
+function SeriesDetails(props) {
   const [executed, setExecuted] = useState(false);
-  const [movie, setMovie] = useState({});
-  const [movieImage, setMovieImage] = useState([]);
+  const [serie, setSerie] = useState({});
+  const [serieImage, setSerieImage] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
-  const [movieVids, setMovieVids] = useState([])
   const [retry, setRetry] = useState(false);
   const [loading, setLoading] = useState(true);
   const [validate, setValidate] = useState(false);
 
-  const movieDetails = (para) => {
-    const movieDetails = {
+  const serieDetails = (para) => {
+    const serieDetails = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${
+      url: `https://api.themoviedb.org/3/tv/${
         para === undefined ? props.id : para
       }`,
       params: { language: "en-US" },
@@ -30,24 +29,23 @@ function Details(props) {
 
     const recommend = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${props.id}/similar`,
-      params: { language: "en-US", page: "1" },
+      url: `https://api.themoviedb.org/3/tv/${props.id}/similar`,
+      params: { language: "en-US", page: "1"},
       headers: {
         accept: "application/json",
         Authorization: API_KEY,
       },
     };
-    movieImages(para);
-    movieVid(para)
+    serieImages(para);
 
-    const getDetails = axios.request(movieDetails);
+    const getDetails = axios.request(serieDetails);
     const getRecommendations = axios.request(recommend);
 
     axios
       .all([getDetails, getRecommendations])
       .then(
         axios.spread((...allData) => {
-          setMovie(allData[0].data);
+          setSerie(allData[0].data);
           setRecommendations(allData[1].data.results);
           setLoading(false);
         })
@@ -60,10 +58,10 @@ function Details(props) {
     setExecuted(true);
   };
 
-  const movieImages = (para) => {
+  const serieImages = (para) => {
     const options = {
       method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${
+      url: `https://api.themoviedb.org/3/tv/${
         para === undefined ? props.id : para
       }/images`,
       headers: {
@@ -75,37 +73,16 @@ function Details(props) {
     axios
       .request(options)
       .then(function (response) {
-        setMovieImage(response.data.backdrops);
+        setSerieImage(response.data.backdrops);
       })
       .catch(function (error) {
         console.error(error);
       });
   };
-  const movieVid = (para) => {
-    const options = {
-      method: "GET",
-      url: `https://api.themoviedb.org/3/movie/${
-        para === undefined ? props.id : para
-      }/videos`,
-      headers: {
-        accept: "application/json",
-        Authorization: API_KEY,
-      },
-    };
-
-    axios
-      .request(options)
-      .then(function (response) {
-        setMovieVids(response.data.results);
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  };
-
   {
-    executed ? "" : movieDetails();
+    executed ? "" : serieDetails();
   }
+
   return (
     <div className='fixed left-0 right-0 top-0 z-30 mx-auto min-h-screen overflow-y-scroll rounded-md border-purple/40 bg-primary dark:bg-primaryDark lg:top-5 lg:w-[90%] lg:border-[1px]'>
       <div className='absolute left-0 z-20 flex w-full justify-end p-4'>
@@ -156,7 +133,7 @@ function Details(props) {
         <section className='relative isolate'>
           <img
             loading='lazy'
-            src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
+            src={`https://image.tmdb.org/t/p/original${serie.backdrop_path}`}
             alt='movie-backdrop'
             className='h-1/4 w-full md:h-1/3 lg:h-2/4'
           />
@@ -165,7 +142,7 @@ function Details(props) {
               <div className='flex items-center'>
                 <img
                   loading='lazy'
-                  src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                  src={`https://image.tmdb.org/t/p/w500${serie.poster_path}`}
                   alt='movie-poster'
                   className='h-40 rounded-md md:h-60 lg:h-64'
                 />
@@ -173,9 +150,11 @@ function Details(props) {
                 {/* Details */}
                 <section className='ml-2 overflow-x-auto md:ml-5'>
                   <p className='text-xl font-black text-purple lg:text-2xl'>
-                    {movie.title}{" "}
+                    {serie.Name}{" "}
                     <span className='text-purple/70'>
-                      ({movie.release_date && movie.release_date.slice(0, 4)})
+                      (
+                      {serie.first_air_date && serie.first_air_date.slice(0, 4)}
+                      )
                     </span>
                   </p>
 
@@ -185,12 +164,12 @@ function Details(props) {
                       size={"0.8rem"}
                       className='mx-1 text-yellow-400'
                     />
-                    <span>{movie.vote_average} / 10</span>
+                    <span>{serie.vote_average} / 10</span>
                   </p>
 
                   <div className='no-scrollbar mt-1 flex overflow-x-scroll'>
-                    {movie.genres &&
-                      movie.genres.map((genre) => (
+                    {serie.genres &&
+                      serie.genres.map((genre) => (
                         <p
                           className='min-h-5 mr-1 max-h-8 text-clip rounded-2xl border-2 border-txt/80 bg-txt/10 px-3 py-1 text-sm text-txt dark:border-white/80 dark:bg-white/10 dark:text-white/80 lg:text-base'
                           key={genre.id}
@@ -201,10 +180,10 @@ function Details(props) {
                   </div>
 
                   <p className='mt-3 hidden leading-loose text-txt dark:text-white/80 md:block'>
-                    {movie.overview}
+                    {serie.overview}
                   </p>
 
-                  <a href={movie.homepage} target='_blank' rel='noreferrer'>
+                  <a href={serie.homepage} target='_blank' rel='noreferrer'>
                     <button className='mt-2 flex items-center rounded-full border-2 border-purple bg-purple/20 px-5 py-1 text-xs text-txt dark:text-white/80 md:text-base'>
                       Visit <BsBoxArrowUpRight className='ml-1' size={"1rem"} />
                     </button>
@@ -213,7 +192,7 @@ function Details(props) {
               </div>
               {/* Overview */}
               <p className='mt-3 leading-relaxed text-txt dark:text-white/80 md:hidden'>
-                {movie.overview}
+                {serie.overview}
               </p>
 
               <section className='mt-5'>
@@ -221,8 +200,8 @@ function Details(props) {
                   Images
                 </p>
                 <div className='no-scrollbar mt-4 flex overflow-x-scroll'>
-                  {movieImage &&
-                    movieImage.map((image, index) => (
+                  {serieImage &&
+                    serieImage.map((image, index) => (
                       <img
                         loading='lazy'
                         src={`https://image.tmdb.org/t/p/original${image.file_path}`}
@@ -230,26 +209,6 @@ function Details(props) {
                         className='mx-3 h-32 rounded-md md:h-40 lg:h-52'
                         alt='movie-image'
                       />
-                    ))}
-                </div>
-              </section>
-
-              <section className='mt-5'>
-                <p className='text-md w-fit rounded-sm border-b-[3px] border-purple py-1 pl-2 pr-5 font-black text-purple lg:text-lg'>
-                  Videos
-                </p>
-                <div className='no-scrollbar mt-4 flex overflow-x-scroll'>
-                  {movieVids &&
-                    movieVids.map((video) => (
-                      <div key={video.key} className='video'>
-                        <iframe
-                          className='mx-3 h-40 rounded-md lg:h-52'
-                          src={`https://www.youtube.com/embed/${video.key}`}
-                          title={video.name}
-                          frameBorder='0'
-                          allowFullScreen
-                        ></iframe>
-                      </div>
                     ))}
                 </div>
               </section>
@@ -265,7 +224,7 @@ function Details(props) {
                       <div
                         key={movie.id}
                         onClick={() => {
-                          movieDetails(movie.id);
+                          serieDetails(movie.id);
                           setLoading(true);
                         }}
                         className='mb-10 mr-4 min-h-fit w-40 flex-none overflow-clip rounded-md border-2 border-transparent bg-gray-100/80 transition-all duration-300 ease-linear hover:border-2 hover:border-purple dark:bg-txt/30'
@@ -287,11 +246,11 @@ function Details(props) {
                             </p>
                           </div>
                           <p className='ml-2 pt-2 font-medium text-txt dark:text-white/70'>
-                            {movie.title}
+                            {movie.name}
                           </p>
 
                           <p className='ml-2 mt-3 font-medium text-txt/60 dark:text-white/40'>
-                            {movie.release_date.slice(0, 4)}
+                            {movie.first_air_date.slice(0, 4)}
                           </p>
                         </article>
                       </div>
@@ -306,4 +265,4 @@ function Details(props) {
   );
 }
 
-export default Details;
+export default SeriesDetails;

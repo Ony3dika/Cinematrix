@@ -1,16 +1,16 @@
-import Navbar from "../../components/navbar";
+import { useState, useEffect } from "react";
 import axios from "axios";
-import { useEffect, useState } from "react";
-let API_KEY = import.meta.env.VITE_AUTH;
-import { GiPreviousButton, GiNextButton } from "react-icons/gi";
-import { BiSearchAlt } from "react-icons/bi";
-import loader from "../../assets/loader.svg";
-import { movieID } from "../../constants/store";
-import Details from "../details/details";
+import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
+import loader from "../../assets/loader.svg";
+import { GiPreviousButton, GiNextButton } from "react-icons/gi";
+import { movieID } from "../../constants/store";
+import { BiSearchAlt } from "react-icons/bi";
+import SeriesDetails from "../details/seriesDetails";
+let API_KEY = import.meta.env.VITE_AUTH;
 
-function Movie() {
-  const [movies, setMovies] = useState([]);
+function Series() {
+  const [seriess, setSeriess] = useState([]);
   const [search, setSearch] = useState("");
   const [pageNo, setPageNo] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -23,8 +23,8 @@ function Movie() {
     setLoading(true);
     const pop = {
       method: "GET",
-      url: "https://api.themoviedb.org/3/movie/popular",
-      params: { language: "en-US", page: pageNo},
+      url: "https://api.themoviedb.org/3/tv/popular",
+      params: { language: "en-US", page: pageNo },
       headers: {
         accept: "application/json",
         Authorization: API_KEY,
@@ -37,7 +37,7 @@ function Movie() {
       .all([getPop])
       .then(
         axios.spread((...allData) => {
-          setMovies(allData[0].data.results);
+          setSeriess(allData[0].data.results);
           setLoading(false);
         })
       )
@@ -52,10 +52,9 @@ function Movie() {
     setLoading(true);
     const options = {
       method: "GET",
-      url: "https://api.themoviedb.org/3/search/movie",
+      url: "https://api.themoviedb.org/3/search/tv",
       params: {
         query: search,
-        include_adult: "false",
         language: "en-US",
         page: "1",
       },
@@ -68,7 +67,7 @@ function Movie() {
     axios
       .request(options)
       .then(function (response) {
-        setMovies(response.data.results);
+        setSeriess(response.data.results);
         setLoading(false);
       })
       .catch(function (error) {
@@ -93,14 +92,14 @@ function Movie() {
             } justify-between md:pr-8`}
           >
             <p className=' w-fit rounded-sm border-b-[3px] border-purple pl-2 pr-5 text-xl font-black text-purple lg:text-2xl'>
-              Movies
+              Series
             </p>
 
             <div className='flex items-center '>
               <div className='mt-5 flex w-full items-center justify-between rounded-lg border-2 border-purple/50 py-2'>
                 <input
                   type='text'
-                  placeholder='Search for Movie...'
+                  placeholder='Search for Series...'
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   className='w-full bg-transparent pl-4 text-txt outline-none dark:text-white/80 '
@@ -114,7 +113,7 @@ function Movie() {
               </div>
             </div>
           </div>
-          {popUp ? <Details id={id} close={close} /> : ""}
+          {popUp ? <SeriesDetails id={id} close={close} /> : ""}
 
           {/* LOADING */}
           <section className='fixed left-0 right-0 top-10 z-50 mx-auto flex w-5/6 justify-center lg:w-2/3'>
@@ -150,20 +149,20 @@ function Movie() {
           {/* POPULAR */}
 
           <section className='mt-5 grid grid-cols-2 gap-x-3 gap-y-5 md:grid-cols-4 lg:grid-cols-5'>
-            {movies &&
-              movies.map((movie) => (
+            {seriess &&
+              seriess.map((serie) => (
                 <div
-                  key={movie.id}
+                  key={serie.id}
                   className='mr-4 min-h-fit flex-none  overflow-clip rounded-md border-2 border-transparent bg-gray-100/80 transition-all duration-300 ease-linear hover:border-2 hover:border-purple dark:bg-txt/30 md:w-44'
                   onClick={() => {
-                    setId(movie.id);
+                    setId(serie.id);
                     setPopUp(true);
                   }}
                 >
                   <figure className='flex justify-center'>
                     <img
                       className='mt-5 h-40 rounded-md transition-all duration-500 hover:scale-110 md:mt-0 md:h-60 lg:h-64'
-                      src={`https://image.tmdb.org/t/p/w500${movie.poster_path}`}
+                      src={`https://image.tmdb.org/t/p/w500${serie.poster_path}`}
                       alt=''
                     />
                   </figure>
@@ -172,16 +171,16 @@ function Movie() {
                   <article className='relative isolate z-0'>
                     <div className='absolute -top-6 ml-2 flex h-8 w-8 items-center justify-center rounded-full border-2 border-purple  bg-gray-100/80 dark:bg-txt/90 '>
                       <p className='text-sm text-txt dark:text-white/70'>
-                        {Math.round(movie.vote_average * 10)}
+                        {Math.round(serie.vote_average * 10)}
                         <sup className='text-[0.5rem]'>%</sup>
                       </p>
                     </div>
                     <p className='ml-2 pt-2 font-medium text-txt dark:text-white/70'>
-                      {movie.title}
+                      {serie.name}
                     </p>
 
                     <p className='ml-2 mt-3 font-medium text-txt/60 dark:text-white/40'>
-                      {movie.release_date.slice(0, 4)}
+                      {serie.first_air_date.slice(0, 4)}
                     </p>
                   </article>
                 </div>
@@ -197,7 +196,7 @@ function Movie() {
                     setPageNo((prevNo) => prevNo - 1);
                   }
                 }}
-                className='mr-5 mt-5 flex justify-center rounded-xl border-[1px] border-purple dark:bg-txt/30 bg-gray-200/80 px-7 py-4 text-purple/60 transition-all duration-300 ease-linear hover:text-purple md:px-9'
+                className='mr-5 mt-5 flex justify-center rounded-xl border-[1px] border-purple bg-gray-200/80 dark:bg-txt/30 px-7 py-4 text-purple/60 transition-all duration-300 ease-linear hover:text-purple md:px-9'
               >
                 Previous
                 <GiPreviousButton className='ml-2' size={"1.5rem"} />
@@ -210,7 +209,7 @@ function Movie() {
                 onClick={() => {
                   setPageNo((prevNo) => prevNo + 1);
                 }}
-                className='mt-5 flex justify-center rounded-xl border-[1px] border-purple bg-gray-200/80 dark:bg-txt/30 px-7 py-4 text-purple/60  transition-all duration-300 ease-linear hover:text-purple md:px-9'
+                className='mt-5 flex justify-center rounded-xl border-[1px] border-purple bg-gray-200/80 px-7 py-4 text-purple/60 transition-all  duration-300 ease-linear hover:text-purple dark:bg-txt/30 md:px-9'
               >
                 Next
                 <GiNextButton className='ml-2' size={"1.5rem"} />
@@ -218,11 +217,10 @@ function Movie() {
             </a>
           </div>
         </div>
-
         <Footer />
       </div>
     </main>
   );
 }
 
-export default Movie;
+export default Series;
